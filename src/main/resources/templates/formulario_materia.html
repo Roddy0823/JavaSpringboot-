@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Materia - Gestor de Pensum</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Gestor de Pensum</h1>
+        <h2>Datos de la Materia</h2>
+
+        <form th:action="@{/materia/guardar}" th:object="${materia}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{estado}" /> <!-- Mantiene el estado original por defecto -->
+
+            <div class="campo">
+                <label>Nombre de la Materia:</label>
+                <input type="text" th:field="*{nombre}" required placeholder="Ej: Cálculo Integral" />
+            </div>
+
+            <div class="campo">
+                <label>Semestre:</label>
+                <input type="number" th:field="*{semestre}" required min="1" max="12" />
+            </div>
+
+            <div class="campo">
+                <label>Prerrequisitos (Selecciona las materias necesarias):</label>
+                <div style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+                    <div th:each="mat : ${listaMaterias}">
+                        <input type="checkbox" th:field="*{prerrequisitos}" th:value="${mat.id}" />
+                        <label th:text="${mat.nombre} + ' (Sem ' + ${mat.semestre} + ')'"
+                            style="display:inline; font-weight:normal;"></label>
+                    </div>
+                    <div th:if="${listaMaterias.empty}">No tienes otras materias registradas para ser prerrequisitos.
+                    </div>
+                </div>
+                <small>Marca las materias que debes haber aprobado ANTES de ver esta.</small>
+            </div>
+
+            <div class="botones">
+                <button type="submit" class="boton boton-primario">Guardar Materia</button>
+                <a th:href="@{/}" class="boton boton-eliminar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - Gestor de Pensum</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <style>
+        .login-box {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body style="background-color: #f0f2f5;">
+    <div class="login-box">
+        <h1 style="font-size: 24px;">Crear Cuenta</h1>
+        <form th:action="@{/registro}" th:object="${usuario}" method="post">
+            <div class="campo">
+                <label>Nombre de Usuario:</label>
+                <input type="text" th:field="*{username}" required />
+            </div>
+            <div class="campo">
+                <label>Contraseña:</label>
+                <input type="password" th:field="*{password}" required />
+            </div>
+            <div class="botones">
+                <button type="submit" class="boton boton-primario" style="width: 100%;">Registrarse</button>
+            </div>
+        </form>
+        <p style="text-align: center; margin-top: 20px;">
+            <a th:href="@{/login}">Volver al Login</a>
+        </p>
+    </div>
+</body>
+
+</html>

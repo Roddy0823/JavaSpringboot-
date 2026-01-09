@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestor de Pensum - Estudiantes</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Gestor de Pensum</h1>
+        <h2>Lista de Estudiantes</h2>
+
+        <a th:href="@{/nuevo}" class="boton boton-primario">Agregar Nuevo Estudiante</a>
+
+        <br><br>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Correo Electrónico</th>
+                    <th>Semestre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="estudiante : ${listaEstudiantes}">
+                    <td th:text="${estudiante.id}"></td>
+                    <td th:text="${estudiante.nombre}"></td>
+                    <td th:text="${estudiante.correo}"></td>
+                    <td th:text="${estudiante.semestre}"></td>
+                    <td>
+                        <a th:href="@{/editar/{id}(id=${estudiante.id})}" class="boton boton-editar">Editar</a>
+                        <a th:href="@{/eliminar/{id}(id=${estudiante.id})}" class="boton boton-eliminar"
+                            onclick="return confirm('¿Estás seguro de eliminar este estudiante?')">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

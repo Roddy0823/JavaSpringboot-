@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Pensum - Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+
+<body>
+    <div class="header-bar">
+        <span>Bienvenido, <b><span th:text="${usuario.username}">Usuario</span></b></span>
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+            <button type="submit" class="boton boton-eliminar" style="padding: 5px 10px; font-size: 12px;">Cerrar
+                Sesión</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h1>Gestor de Pensum</h1>
+
+        <!-- Barra de Progreso -->
+        <div class="progreso-container">
+            <div class="progreso-label">Progreso de la Carrera: <span th:text="${progreso}">0</span>%</div>
+            <div class="barra-fondo">
+                <div class="barra-relleno" th:style="'width:' + ${progreso} + '%'"></div>
+            </div>
+        </div>
+
+        <!-- Alertas -->
+        <div th:if="${error}" class="alerta error" th:text="${error}"></div>
+        <div th:if="${mensaje}" class="alerta exito" th:text="${mensaje}"></div>
+
+        <div style="margin: 20px 0; text-align: right;">
+            <a th:href="@{/materia/nueva}" class="boton boton-primario">+ Inscribir Materia</a>
+        </div>
+
+        <!-- Listado Simple de Materias -->
+        <!-- Mejora futura: Agrupar visualmente por semestres -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Semestre</th>
+                    <th>Materia</th>
+                    <th>Prerrequisitos</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${materias.empty}">
+                    <td colspan="5" style="text-align:center;">No tienes materias inscritas. ¡Comienza agregando una!
+                    </td>
+                </tr>
+                <tr th:each="m : ${materias}"
+                    th:classappend="${m.estado == T(com.sena.gestorpensum.model.EstadoMateria).APROBADA} ? 'fila-aprobada' : ''">
+                    <td style="text-align: center; font-weight: bold;" th:text="${m.semestre}">1</td>
+                    <td th:text="${m.nombre}">Cálculo</td>
+                    <td>
+                        <span th:each="pre : ${m.prerrequisitos}" class="badge" th:text="${pre.nombre}">Física</span>
+                        <span th:if="${m.prerrequisitos.empty}">-</span>
+                    </td>
+                    <td>
+                        <span th:if="${m.estado == T(com.sena.gestorpensum.model.EstadoMateria).APROBADA}"
+                            class="badge badge-success">APROBADA</span>
+                        <span th:if="${m.estado == T(com.sena.gestorpensum.model.EstadoMateria).PENDIENTE}"
+                            class="badge badge-warning">PENDIENTE</span>
+                    </td>
+                    <td>
+                        <!-- Botón Aprobar (Solo si está pendiente) -->
+                        <a th:if="${m.estado == T(com.sena.gestorpensum.model.EstadoMateria).PENDIENTE}"
+                            th:href="@{/materia/aprobar/{id}(id=${m.id})}" title="Marcar como Aprobada">✅</a>
+
+                        <!-- Botón Pendiente (Si me equivoqué) -->
+                        <a th:if="${m.estado == T(com.sena.gestorpensum.model.EstadoMateria).APROBADA}"
+                            th:href="@{/materia/pendiente/{id}(id=${m.id})}" title="Volver a Pendiente">↩️</a>
+
+                        <a th:href="@{/materia/editar/{id}(id=${m.id})}" title="Editar">✏️</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
