@@ -36,3 +36,6 @@ build/
 ### Database ###
 data/
 *.db
+
+### Dependencies ###
+deps/

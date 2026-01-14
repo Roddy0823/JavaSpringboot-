@@ -20,8 +20,8 @@ Este proyecto es **auto-contenido**. Incluye un "Maven Wrapper" (`mvnw`) para as
     ```
 
     Windows:
-    ```cmd
-    .\mvnw.cmd spring-boot:run
+    ```powershell
+    .\run_springboot.ps1
     ```
 
 4.  Una vez iniciada, abra el navegador en: [http://localhost:8082](http://localhost:8082)
