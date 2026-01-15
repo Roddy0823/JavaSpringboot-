@@ -30,7 +30,15 @@ public class AuthController {
     }
 
     @PostMapping("/registro")
-    public String procesarRegistro(Usuario usuario) {
+    public String procesarRegistro(Usuario usuario,
+            @org.springframework.web.bind.annotation.RequestParam String confirmPassword,
+            Model model) {
+
+        if (!usuario.getPassword().equals(confirmPassword)) {
+            model.addAttribute("error", "Las contraseñas no coinciden");
+            return "registro";
+        }
+
         // Encriptar contraseña antes de guardar
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuarioRepository.save(usuario);
