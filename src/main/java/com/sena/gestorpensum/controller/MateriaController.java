@@ -16,6 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controlador principal para la gestión de materias.
+ * Maneja el dashboard, creación, edición y aprobación de materias.
+ */
 @Controller
 public class MateriaController {
 
@@ -26,7 +30,11 @@ public class MateriaController {
     private UsuarioRepository usuarioRepository;
 
     /**
-     * Dashboard Principal: Muestra las materias por semestre y el progreso.
+     * Dashboard Principal: Muestra las materias agrupadas y el progreso general.
+     * 
+     * @param userDetails Detalles del usuario autenticado
+     * @param model       Modelo para la vista
+     * @return Vista "dashboard"
      */
     @GetMapping("/")
     public String dashboard(@AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -47,7 +55,13 @@ public class MateriaController {
     }
 
     /**
-     * Formulario para crear NUEVA materia.
+     * Muestra el formulario para registrar una nueva materia.
+     * Carga la lista de materias existentes para seleccionarlas como
+     * prerrequisitos.
+     * 
+     * @param userDetails Usuario actual
+     * @param model       Modelo para la vista
+     * @return Vista "formulario_materia"
      */
     @GetMapping("/materia/nueva")
     public String nuevaMateria(@AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -63,7 +77,14 @@ public class MateriaController {
     }
 
     /**
-     * Guardar materia (Creación o Edición).
+     * Guarda una materia (Creación o Edición).
+     * Incluye validación de lógica de negocio: No se puede aprobar si faltan
+     * prerrequisitos.
+     * 
+     * @param userDetails   Usuario actual
+     * @param materia       Objeto materia a guardar
+     * @param redirectAttrs Atributos para mensajes flash
+     * @return Redirección al dashboard
      */
     @PostMapping("/materia/guardar")
     public String guardarMateria(@AuthenticationPrincipal UserDetails userDetails,
@@ -104,7 +125,13 @@ public class MateriaController {
     }
 
     /**
-     * Editar materia existente.
+     * Carga el formulario de edición para una materia existente.
+     * Verifica que la materia pertenezca al usuario actual.
+     * 
+     * @param id          ID de la materia a editar
+     * @param userDetails Usuario actual
+     * @param model       Modelo
+     * @return Vista "formulario_materia" o redirección si no es dueño
      */
     @GetMapping("/materia/editar/{id}")
     public String editarMateria(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -128,7 +155,12 @@ public class MateriaController {
     }
 
     /**
-     * Acción rápida para marcar aprobada desde el dashboard.
+     * Acción rápida para marcar una materia como aprobada desde el dashboard.
+     * 
+     * @param id            ID de la materia
+     * @param userDetails   Usuario actual
+     * @param redirectAttrs Para mensajes de error/éxito
+     * @return Redirección al dashboard
      */
     @GetMapping("/materia/aprobar/{id}")
     public String aprobarRapido(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails,

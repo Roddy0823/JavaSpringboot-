@@ -56,3 +56,4 @@ Write-Host "Iniciando Aplicación Spring Boot..." -ForegroundColor Cyan
 Write-Host "La primera vez descargará todas las dependencias, esto puede tardar unos minutos." -ForegroundColor Yellow
 
 mvn spring-boot:run
+Write-Host "Aplicación disponible en: http://localhost:8082" -ForegroundColor Green

@@ -3,6 +3,10 @@ package com.sena.gestorpensum.model;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Entidad que representa a un Usuario del sistema.
+ * Se utiliza para la autenticación y para asignar materias.
+ */
 @Entity
 @Table(name = "usuarios")
 public class Usuario {

@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Entidad que representa una Materia o Asignatura.
+ * Contiene información como nombre, semestre y estado.
+ */
 @Entity
 @Table(name = "materias")
 public class Materia {
@@ -31,6 +35,10 @@ public class Materia {
     @JoinTable(name = "materia_prerrequisitos", joinColumns = @JoinColumn(name = "materia_id"), inverseJoinColumns = @JoinColumn(name = "prerrequisito_id"))
     private Set<Materia> prerrequisitos = new HashSet<>();
 
+    /**
+     * Constructor por defecto.
+     * Inicializa el estado como PENDIENTE.
+     */
     public Materia() {
         this.estado = EstadoMateria.PENDIENTE;
     }
@@ -91,7 +99,12 @@ public class Materia {
         this.prerrequisitos = prerrequisitos;
     }
 
-    // Método helper para verificar si se puede aprobar
+    /**
+     * Verifica si la materia tiene algún prerrequisito que no esté aprobado.
+     * 
+     * @return true si faltan prerrequisitos por aprobar, false si todos están
+     *         aprobados.
+     */
     public boolean tienePrerrequisitosPendientes() {
         return prerrequisitos.stream().anyMatch(p -> p.getEstado() != EstadoMateria.APROBADA);
     }
